@@ -18,8 +18,9 @@
     <dubbo:protocol name="dubbo" port="20880"></dubbo:protocol>
 
     <!--发布服务-->
-    <dubbo:service interface="com.blue.service.TestService" ref="testServiceImpl"></dubbo:service>
-    <!--<dubbo:service interface="com.taotao.service.ItemService" ref="itemServiceImpl" timeout="1000000"></dubbo:service>-->
+    <dubbo:service interface="com.blue.service.TestService" ref="testServiceImpl" timeout="1000000"></dubbo:service>
+    <dubbo:service interface="com.blue.service.ItemService" ref="itemServiceImpl" timeout="1000000"></dubbo:service>
+    <dubbo:service interface="com.blue.service.ItemCatService" ref="itemCatServiceImpl" timeout="1000000"></dubbo:service>
 
 
 </beans>

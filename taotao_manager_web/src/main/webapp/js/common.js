@@ -91,55 +91,77 @@ var TT = TAOTAO = {
         	});
     	});
     },
-    
+
     // 初始化选择类目组件
     initItemCat : function(data){
-    	$(".selectItemCat").each(function(i,e){
-    		var _ele = $(e);
-    		if(data && data.cid){
-    			_ele.after("<span style='margin-left:10px;'>"+data.cid+"</span>");
-    		}else{
-    			_ele.after("<span style='margin-left:10px;'></span>");
-    		}
-    		_ele.unbind('click').click(function(){
-    			//创建一个div标签
-    			$("<div>").css({padding:"5px"}).html("<ul>")
-    			.window({
-    				width:'500',
-    			    height:"450",
-    			    modal:true,
-    			    closed:true,
-    			    iconCls:'icon-save',
-    			    title:'选择类目',
-    			    onOpen : function(){
-    			    	var _win = this;
-    			    	$("ul",_win).tree({
-    			    		url:'/item/cat/list',
-    			    		animate:true,
-    			    		onClick : function(node){
-    			    			if($(this).tree("isLeaf",node.target)){
-    			    				// 填写到cid中
-    			    				_ele.parent().find("[name=cid]").val(node.id);
-    			    				// 将文本值显示，并设置标签(上边追加的<span)的cid属性为节点的id
-    			    				_ele.next().text(node.text).attr("cid",node.id);
-    			    				
-    			    				$(_win).window('close');
-    			    				if(data && data.fun){
-    			    					alert(data);
-    			    					data.fun.call(this,node);
-    			    				}
-    			    			}
-    			    		}
-    			    	});
-    			    },
-    			    onClose : function(){
-    			    	$(this).window("destroy");
-    			    }
-    			}).window('open');
-    		});
-    	});
+        //此方法在页面初始化的时候被调用了
+        //类选择器获取到点击的按钮
+        $(".selectItemCat").each(function(i,e){
+            //将元素转为jquery的对象
+            var _ele = $(e);
+            if(data && data.cid){
+                _ele.after("<span style='margin-left:10px;'>"+data.cid+"</span>");
+            }else{
+                //在元素的后边追加标签<span style='margin-left:10px;'></span>
+                _ele.after("<span style='margin-left:10px;'></span>");
+            }
+            //解绑再绑定事件  当按钮被点击的时候 触发以下的业务逻辑
+            _ele.unbind('click').click(function(){
+                //$("<div>")创建一个div标签，添加CSS的样式 之后在<div>标签里面创建<ul>----><div><ul></ul></div>                     $("div"):获取
+                $("<div>").css({padding:"5px"}).html("<ul>")
+                //打开一个窗口
+                    .window({
+                        width:'500',
+                        height:"450",
+                        modal:true,
+                        closed:true,
+                        iconCls:'icon-save',
+                        title:'选择类目',
+
+                        //当窗口被打开的时候触发以下的业务逻辑
+                        onOpen : function(){
+                            //构建树的控件
+
+
+                            //获取窗口本身
+                            var _win = this;
+                            //获取当前的窗口的ul的标签里面创建一棵树
+                            $("ul",_win).tree({
+                                //异步请求的数据的URL
+                                url:'/item/cat/list',//?id=111
+                                animate:true,
+                                //当点击树的节点的时候触发
+                                //node:就是被点击的节点对象
+                                onClick : function(node){
+                                    //extjs
+                                    //判断被点击的节点是否是一个叶子节点  如果是就执行以下的业务逻辑
+                                    if($(this).tree("isLeaf",node.target)){
+                                        // 填写到cid中
+                                        //获取隐藏域 赋值为被点击节点的ID的值
+                                        _ele.parent().find("[name=cid]").val(node.id);
+                                        //获取到的就是刚才添加的标签<span>男表 </span> 在标签的中间添加文本
+                                        // <span  cid="291">男表 </span>
+                                        _ele.next().text(node.text).attr("cid",node.id);
+                                        //关闭窗口
+                                        $(_win).window('close');
+
+                                        if(data && data.fun){
+                                            // alert(data);
+                                            data.fun.call(this,node);
+                                        }
+                                    }
+                                }
+                            });
+                        },
+                        //当关闭窗口的时候
+                        onClose : function(){
+                            //吧当前的窗口销毁。
+                            $(this).window("destroy");
+                        }
+                    }).window('open');
+            });
+        });
     },
-    
     createEditor : function(select){
     	return KindEditor.create(select, TT.kingEditorParams);
     },
