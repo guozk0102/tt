@@ -21,7 +21,6 @@ public class ItemCatController {
     @Autowired
     private ItemCatService itemCatService;
 
-
     @RequestMapping("/item/cat/list")//页面传过来的是被点击的节点 id
     @ResponseBody
     public List<TreeNode> getItemCatList(@RequestParam(value = "id", defaultValue = "0") Long parentId) {
