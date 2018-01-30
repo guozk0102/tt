@@ -13,6 +13,9 @@
     <context:component-scan base-package="com.blue.controller"></context:component-scan>
     <mvc:annotation-driven/>
 
+    <!--注入属性文件-->
+    <context:property-placeholder location="classpath:resources/resource.properties"></context:property-placeholder>
+
     <!--配置资源映射-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/jsp/"></property>
@@ -25,6 +28,12 @@
     <!--<mvc:default-servlet-handler></mvc:default-servlet-handler>-->
     <dubbo:application name="taotao_manager_web"></dubbo:application>
     <dubbo:registry address="192.168.25.133" protocol="zookeeper" port="2181"></dubbo:registry>
+
+    <!--配置多媒体文件你上传解析器-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"/>
+        <property name="maxInMemorySize" value="5242880"/>
+    </bean>
 
     <!--引入服务-->
     <!--服务端和消费端同时配置超时,以消费端为主,但是建议在服务端配置-->

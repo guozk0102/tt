@@ -1,3 +1,4 @@
+import com.blue.utils.FastDFSClient;
 import org.csource.fastdfs.*;
 import org.junit.Test;
 
@@ -36,7 +37,15 @@ public class FastDFSTest {
         for (String jpg : jpgs) {
             System.out.println(jpg);
         }
+    }
 
+    @Test
+    public void fun01() throws Exception{
+        FastDFSClient fastDFSClient = new FastDFSClient("C:\\workspace\\taotao_parent\\taotao_manager_web\\src\\main\\resources\\resources\\fastdfs.conf");
+
+        String filepath = fastDFSClient.uploadFile("F:\\皮克奇叶儿\\02b4c6b07a4e6c04c4be050fe37fc83b.jpg", "jpg");
+
+        System.out.println(filepath);
 
     }
 
