@@ -1,6 +1,8 @@
 package com.blue.service;
 
 import com.blue.common.pojo.EasyUIDataGridResult;
+import com.blue.common.pojo.TaotaoResult;
+import com.blue.pojo.TbItem;
 
 /**
  * @author gzk
@@ -16,4 +18,12 @@ public interface ItemService {
      * @return
      */
     public EasyUIDataGridResult getItemList(Integer page,Integer rows);
+
+    /**
+     * 保存新增商品
+     * @param tbItem
+     * @param desc
+     * @return
+     */
+    public TaotaoResult saveItem(TbItem tbItem,String desc);
 }

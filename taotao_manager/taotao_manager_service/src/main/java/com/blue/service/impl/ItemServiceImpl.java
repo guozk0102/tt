@@ -1,14 +1,19 @@
 package com.blue.service.impl;
 
 import com.blue.common.pojo.EasyUIDataGridResult;
+import com.blue.common.pojo.TaotaoResult;
+import com.blue.common.utils.IDUtils;
+import com.blue.mapper.TbItemDescMapper;
 import com.blue.mapper.TbItemMapper;
 import com.blue.pojo.TbItem;
+import com.blue.pojo.TbItemDesc;
 import com.blue.service.ItemService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +27,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     private TbItemMapper tbItemMapper;
+
+    @Autowired
+    private TbItemDescMapper descMapper;
 
     @Override
     public EasyUIDataGridResult getItemList(Integer page, Integer rows) {
@@ -42,5 +50,36 @@ public class ItemServiceImpl implements ItemService {
         result.setRows(info.getList());
 
         return result;
+    }
+
+    @Override
+    public TaotaoResult saveItem(TbItem tbItem, String desc) {
+        //注入mapper : tbItemMapper 和 tbItemDescMapper
+
+        //1.生成商品的唯一id
+        long itemId = IDUtils.genItemId();
+
+        //2.补全商品其他属性
+        tbItem.setId(itemId);
+        tbItem.setStatus((byte) 1);
+        tbItem.setCreated(new Date());
+        tbItem.setUpdated(tbItem.getCreated());
+
+//        3.商品的基本信息表
+        tbItemMapper.insertSelective(tbItem);
+
+        //4.创建一个TbItemDesc对象
+        TbItemDesc itemDesc = new TbItemDesc();
+
+        //5.补全itemDesc属性
+        itemDesc.setItemId(itemId);
+        itemDesc.setItemDesc(desc);
+        itemDesc.setCreated(tbItem.getCreated());
+        itemDesc.setUpdated(tbItem.getCreated());
+
+        //6.插入商品描述表
+        descMapper.insertSelective(itemDesc);
+
+        return TaotaoResult.ok();
     }
 }

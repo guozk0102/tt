@@ -40,5 +40,6 @@
     <dubbo:reference interface="com.blue.service.TestService" id="testService" timeout="1000000"></dubbo:reference>
     <dubbo:reference interface="com.blue.service.ItemService" id="itemService" timeout="1000000"></dubbo:reference>
     <dubbo:reference interface="com.blue.service.ItemCatService" id="itemCatService" timeout="1000000"></dubbo:reference>
+    <dubbo:reference interface="com.blue.service.ContentCategoryService" id="contentCategoryService" timeout="1000000"></dubbo:reference>
 
 </beans>
